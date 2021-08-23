@@ -1,0 +1,29 @@
+<mat-card class="col-sm-4" style="top: 50%; left: 50%; transform: translate(-50%,-50%);">
+    <mat-card-title class="text-center">Pass Generation</mat-card-title>
+    <img mat-card-image src="https://play-lh.googleusercontent.com/_4i-ZdD1aQvSqeEoNfKGEheSzAQeM-V02b8mkLAUHYRDQ5CLuhfbA_jBtlVRkaIagT0" alt="mahapolice">
+
+
+    <form class="text-center" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Email</mat-label>
+            <input formControlName="email" type="text" matInput color="primary">
+        </mat-form-field>
+        <strong *ngIf="(!loginForm.controls['email'].valid) && (loginForm.controls['email'].touched) " class="text-danger ">Email is required.</strong>
+        <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Password</mat-label>
+            <input autocomplete formControlName="password" type="password" matInput color="primary">
+        </mat-form-field>
+        <strong *ngIf="(!loginForm.controls['password'].valid) && (loginForm.controls['password'].touched) " class="text-danger ">Password must be at least 6 characters.</strong>
+
+
+        <button mat-raised-button style="background-color: var(--primary);color: white;" class="btn btn-block" [disabled]="!loginForm.valid">Login</button>
+    </form>
+
+
+    <div class="alert mt-2 alert-success" *ngIf="message.length > 0">
+        {{message}}
+    </div>
+    <div class="alert mt-2 alert-danger" *ngIf="error.length > 0">
+        {{error}}
+    </div>
+</mat-card>

@@ -1,0 +1,47 @@
+/* You can add global styles to this file, and also import other style files */
+
+* {
+    --primary: #030067;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-toolbar .mat-toolbar-single-row {
+    background-color: red !important;
+}
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 6px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background-color: rgb(202, 200, 255);
+    border-radius: 24px;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(150, 150, 150);
+    /* color of the scroll thumb */
+    border-radius: 1rem;
+    /* roundness of the scroll thumb */
+    border: 3px solid transparent;
+    /*creates padding around scroll thumb*/
+}

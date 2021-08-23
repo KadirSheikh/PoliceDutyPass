@@ -1,0 +1,357 @@
+<div class="container">
+
+    <div class="col-12 mt-3">
+        <div class="row">
+            <div class="col-6">
+                <h4>Generate Bulk Passes</h4>
+            </div>
+            <div class="col-6">
+                <input type="radio" (click)="toggleCard()" name="a">&nbsp;&nbsp; <span style="font-weight: 500;font-size: smaller;" class="mr-5">Single</span> <input type="radio" name="a" checked>&nbsp;&nbsp; <span style="font-weight: 500;font-size: smaller;">Bulk</span>
+                <button class="btn pl-4 pr-4 float-right" style="background-color: var(--primary);color: white;" (click)="closeDialog()">Close</button>
+            </div>
+
+        </div>
+
+    </div>
+    <hr style="border: 2px solid black;border-radius: 2px; width: 100%;">
+    <div class="row" *ngIf="message.length > 0">
+        <div class="col-12">
+            <div class="alert mt-2 alert-success">
+                {{message}}
+            </div>
+
+            <div class="card my-4 table-responsive p-2">
+                <table class=" table table-striped  table-sm row-border hover">
+                    <thead>
+                        <tr>
+
+                            <th>Id Number</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Mobile Number</th>
+                            <th>Company Name</th>
+                            <th>Station</th>
+                            <th>Duty Place</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Pass Type</th>
+                            <th>Pass Colour</th>
+                            <th>Pass Size</th>
+                            <th>Lineup</th>
+                            <th>Proximity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of pdfArray let i = index ">
+
+
+                            <td>{{ item.id_number }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.designation }}</td>
+                            <td>{{ item.mobile }}</td>
+                            <td>{{ item.companyname }}</td>
+                            <td>{{ item.station }}</td>
+                            <td>{{ item.dutyplace }}</td>
+                            <td>{{ item.startdate }}</td>
+                            <td>{{ item.enddate }}</td>
+
+                            <td>{{ item.pass_type }}</td>
+                            <td>{{ item.pass_color }}</td>
+                            <td>{{ item.pass_size }}</td>
+                            <td> <span *ngIf="item.lineup">Yes</span> <span *ngIf="!item.lineup">No</span> </td>
+                            <td><span *ngIf="item.proximity">Yes</span> <span *ngIf="!item.proximity">No</span></td>
+
+
+                        </tr>
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="col-md-12 bg-light text-right" *ngIf="showDownloadBtn">
+                <button (click)="downloadExcelPdf()" class="btn ml-3" style="background-color: var(--primary);color: white;">Download
+                    Pass</button>
+            </div>
+            <div id="page" style="width: 595.28px;color: black;background: white;">
+
+                <div class="card" style="width:600px;border: 1px solid black;margin-bottom: 320px;" *ngFor="let item of pdfArray" [style.background-color]="item.pass_color">
+
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12" style="text-align: center;">
+                                <h4 class="card-title">VALID WITH ID</h4>
+                                <div class="col-5" style="margin-left: 160px;">
+                                    <h4 class="card-title" style="background-color:black;" [style.color]="item.pass_color">{{item.pass_type | uppercase}}</h4>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row mb-3">
+                            <div class="col-2">
+                                <b>Sr.No:  </b>
+                            </div>
+                            <div style="border-bottom:1px solid black;" class="col-10">
+                                {{item.id_number}}
+                            </div>
+
+
+                        </div>
+                        <div class="row mb-3">
+
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <b>Place: </b>
+                                    </div>
+                                    <div style="border-bottom:1px solid black;" class="col-10">
+                                        {{item.dutyplace}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <b>Valid from: </b>
+                                    </div>
+                                    <div style="border-bottom:1px solid black;" class="col-9">
+                                        {{item.startdate | date}} to {{item.enddate | date}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <b>Name: </b>
+                                    </div>
+                                    <div style="border-bottom:1px solid black;" class="col-10">
+                                        {{item.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-2"></div>
+                            <div class="col-3 mr-5" style="border: 1px solid black;">
+                                <img src="http://localhost:3000/{{item.photo}}" class="img-fluid" alt="" style="width:200px;height: 200px;">
+                            </div>
+
+                            <div class="col-6">
+                                <div class="row mb-4 mt-3">
+                                    <div class="col-3">
+                                        <b>Rank: </b>
+                                    </div>
+                                    <div style="border-bottom:1px solid black;" class="col-9">
+                                        {{item.designation}}
+                                    </div>
+                                </div>
+                                <div class="row mb-5">
+                                    <div class="col-3">
+                                        <b>DPT: </b>
+                                    </div>
+                                    <div style="border-bottom:1px solid black;" class="col-9">
+                                        {{item.companyname}}
+                                    </div>
+                                </div>
+                                <div class="row mb-4 mt-2">
+
+                                    DCP S. B NAGPUR CITY
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <!-- <div class="card mb-4" style="width:570px;border: 1px solid black;" *ngFor="let item of pdfArray">
+
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-4" style="text-align: center;">
+                                <img class="card-img-top" src="../../assets/police.jpg" alt="Card image" style="width:100%">
+                            </div>
+                            <div class="col-8">
+                                <h4 class="card-title">Nagpur Police Pass</h4>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <b>Buckle Id: </b>
+                            </div>
+                            <div class="col-9">
+                                {{item.id_number}}
+                            </div>
+
+
+                        </div>
+                        <div class="row mb-2">
+
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>Name: </b>
+                                    </div>
+                                    <div class="col-6">
+                                        {{item.name}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>Mobile No: </b>
+                                    </div>
+                                    <div class="col-6">
+                                        {{item.mobile}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>Designation: </b>
+                                    </div>
+                                    <div class="col-6">
+                                        {{item.designation}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <b>Company Name: </b>
+                                    </div>
+                                    <div class="col-4">
+                                        {{item.companyname}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>Station: </b>
+                                    </div>
+                                    <div class="col-6">
+                                        {{item.station}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>Duty Place: </b>
+                                    </div>
+                                    <div class="col-6">
+                                        {{item.dutyplace}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>Start Date: </b>
+                                    </div>
+                                    <div class="col-6">
+                                        {{item.startdate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <b>End Date: </b>
+                                    </div>
+                                    <div class="col-6">
+                                        {{item.enddate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-3">
+                                <b>Duration: </b>
+                            </div>
+                            <div class="col-9">
+                                {{item.starttime}} to {{item.endtime}}
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="alert mt-2 alert-danger" *ngIf="error.length > 0">
+        {{error}}
+    </div>
+
+    <div class="col-12" *ngIf="show">
+        <div class="row">
+            <div class="col-3">
+
+            </div>
+            <div class="col-6 mt-5">
+                <div align="center">
+                    <h5 class="ml-4"> Upload Excel Sheet</h5>
+                    <label class="pl-5 pr-5"> Choose Excel Sheet
+                        <input type="file" size="60" (change)="showFileName($event)"
+                            accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                    </label>
+                    <div style="font-weight: 600; font-size: smaller;">Sample Sheet : {{fileName}}</div>
+
+                    <button *ngIf="showUploadBtn" class="btn pl-3 pr-3 mt-4" style="background-color: var(--primary);color: white;" (click)="uploadDB()">Upload</button>
+                </div>
+            </div>
+            <div class="col-3">
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>

@@ -1,0 +1,329 @@
+<div class="container">
+
+    <div class="col-12 mt-3">
+        <div class="row">
+            <div class="col-3">
+                <h4>Edit Pass</h4>
+            </div>
+            <div class="col-7">
+                <!-- <mat-radio-group aria-label="Select an option">
+                    <mat-radio-button value="Single" checked>Single</mat-radio-button>&nbsp;&nbsp;
+                    <mat-radio-button value="Bulk">Bulk</mat-radio-button>
+                </mat-radio-group> -->
+                <!-- <input type="radio" checked name="a">&nbsp;&nbsp; <span style="font-weight: 500;font-size: smaller;" class="mr-5">Single</span> <input type="radio" name="a">&nbsp;&nbsp; <span style="font-weight: 500;font-size: smaller;">Bulk</span> -->
+            </div>
+            <div class="col-2">
+                <button class="btn pl-4 pr-4" style="background-color: var(--primary);color: white;" (click)="closeDialog()">Close</button>
+            </div>
+        </div>
+
+    </div>
+    <hr style="border: 1px solid black;border-radius: 2px; width: 100%;">
+    <div *ngIf="message.length > 0">
+        <div class="alert mt-2 alert-success">
+            {{message}}
+        </div>
+        <div id="page" style="width: 595.28px;color: black;background: white;">
+
+            <!-- <img src="../../assets/police.jpg" class="img-fluid" alt=""> -->
+            <!-- <img src="http://localhost:3000/police.jpg" class="img-fluid" alt=""> -->
+
+            <div class="card" style="width:600px;border: 1px solid black;" [style.background-color]="editPassColor">
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-12" style="text-align: center;">
+                            <h4 class="card-title">VALID WITH ID</h4>
+                            <div class="col-5" style="margin-left: 160px;">
+                                <h4 class="card-title" style="background-color:black;" [style.color]="editPassColor">{{editPassType | uppercase}}</h4>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body" *ngFor="let item of updateData">
+
+                    <div class="row mb-3">
+                        <div class="col-2">
+                            <b>Sr.No:  </b>
+                        </div>
+                        <div style="border-bottom:1px solid black;" class="col-10">
+                            {{item.id_number}}
+                        </div>
+
+
+                    </div>
+                    <div class="row mb-3">
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">
+                                    <b>Place: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-10">
+                                    {{item.duty_place}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3">
+                                    <b>Valid from: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-9">
+                                    {{item.start_date | date}} to {{item.end_date | date}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">
+                                    <b>Name: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-10">
+                                    {{item.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-2"></div>
+
+                        <div *ngIf="!showChange" class="col-3 mr-5" style="border: 1px solid black;">
+                            <img src="http://localhost:3000/{{item.photo}}" class="img-fluid" alt="" style="width:200px;height: 200px;">
+                        </div>
+
+                        <div *ngIf="showChange" class="col-3 mr-5" style="border: 1px solid black;">
+                            <img src="http://localhost:3000/{{changeFilename}}" class="img-fluid" alt="" style="width:200px;height: 200px;">
+                        </div>
+
+                        <div class="col-6">
+                            <div class="row mb-4 mt-3">
+                                <div class="col-3">
+                                    <b>Rank: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-9">
+                                    {{item.designation}}
+                                </div>
+                            </div>
+                            <div class="row mb-5">
+                                <div class="col-3">
+                                    <b>DPT: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-9">
+                                    {{item.company_name}}
+                                </div>
+                            </div>
+                            <div class="row mb-4 mt-2">
+
+                                DCP S. B NAGPUR CITY
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12 bg-light text-right">
+            <button (click)="download()" class="btn" style="background-color: var(--primary);color: white;">Download Pass</button>
+        </div>
+
+    </div>
+    <div class="alert mt-2 alert-danger" *ngIf="error.length > 0">
+        {{error}}
+    </div>
+    <form [formGroup]="updatePassGenerationForm" (ngSubmit)="onSubmit()" *ngIf="showForm">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Bukle Number: </label>
+                        <input type="text" class="form-control" formControlName="id_number" name="id_number" placeholder="Bukle Number/Id Number">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['id_number'].valid) && (updatePassGenerationForm.controls['id_number'].touched) " class="text-danger ">Buckel No/ID Number is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Name: </label>
+                        <input type="text" class="form-control" formControlName="name" name="name" placeholder="Name">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['name'].valid) && (updatePassGenerationForm.controls['name'].touched) " class="text-danger ">Name is required.</strong>
+
+                    </div><br>
+                    <label>Image: </label>
+                    <div class="input-group mb-2 mr-sm-2">
+
+                        <input type="file" class="form-control" formControlName="photo" name="photo" (change)="selectImg($event)">
+                        <!-- <strong *ngIf="(!updatePassGenerationForm.controls['photo'].valid) && (updatePassGenerationForm.controls['photo'].touched) " class="text-danger ">Name is required.</strong> -->
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" style="cursor: pointer;" (click)="showImage()">Check</div>
+                        </div>
+
+                    </div><br>
+
+                    <!-- <div class="form-group row">
+                        <div class="col-10">
+                            <label>Image: </label>
+                            <input type="file" class="form-control" formControlName="photo" name="photo" (change)="selectImg($event)">
+                            <strong *ngIf="(!updatePassGenerationForm.controls['photo'].valid) && (updatePassGenerationForm.controls['photo'].touched) " class="text-danger ">Name is required.</strong>
+                        </div>
+                        <div class="col-2">
+                            <button>S</button>
+                        </div>
+
+
+                    </div><br> -->
+                    <div class="form-group">
+                        <label>Rank: </label>
+                        <input type="text" class="form-control" formControlName="designation" name="designation" placeholder="Rank">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['designation'].valid) && (updatePassGenerationForm.controls['designation'].touched) " class="text-danger ">Designation is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Start Date: </label>
+                        <input type="text" class="form-control" formControlName="start_date" name="start_date">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['start_date'].valid) && (updatePassGenerationForm.controls['start_date'].touched) " class="text-danger ">Start Date is required.</strong>
+
+                    </div> <br>
+
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Mobile: </label>
+                        <input type="number" class="form-control" formControlName="mobile" name="mobile" placeholder="Mobile">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['mobile'].valid) && (updatePassGenerationForm.controls['mobile'].touched) " class="text-danger ">Mobile is required.</strong>
+
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Station: </label>
+                        <input type="text" class="form-control" formControlName="station" name="station" placeholder="Station">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['station'].valid) && (updatePassGenerationForm.controls['station'].touched) " class="text-danger ">Station is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Place Duty: </label>
+                        <input type="text" class="form-control" formControlName="duty_place" name="duty_place" placeholder="Place Duty">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['duty_place'].valid) && (updatePassGenerationForm.controls['duty_place'].touched) " class="text-danger ">Duty Place is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>DPT: </label>
+                        <input type="text" class="form-control" formControlName="company_name" name="company_name" placeholder="DPT">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['company_name'].valid) && (updatePassGenerationForm.controls['company_name'].touched) " class="text-danger ">Company Name is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>End Date: </label>
+                        <input type="text" class="form-control" formControlName="end_date" name="end_date">
+                        <strong *ngIf="(!updatePassGenerationForm.controls['end_date'].valid) && (updatePassGenerationForm.controls['end_date'].touched) " class="text-danger ">End Date is required.</strong>
+
+                    </div><br>
+
+                </div>
+                <div class="col-4">
+
+                    <div class="form-group">
+                        <label>Edit Pass Type : </label>
+                        <!-- <b> {{epassType}}</b> -->
+
+                        <select class="form-control" formControlName="pass_type" name="pass_type">
+                            <option [ngValue]="null" disabled>Choose Pass Type</option>
+
+                            <option *ngFor="let type of PassType" [ngValue]="type">
+                                {{ type }}
+                            </option>
+
+                        </select>
+                        <!-- <strong *ngIf="(!updatePassGenerationForm.controls['pass_type'].valid) && (updatePassGenerationForm.controls['pass_type'].touched) " class="text-danger ">Pass type is required.</strong> -->
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Edit Pass Size :</label>
+                        <!-- <b> {{epassSize}}</b> -->
+                        <select class="form-control" formControlName="pass_size" name="pass_size">
+                            <option [ngValue]="null" disabled>Choose Pass Size</option>
+                            <option *ngFor="let size of PassSize" [ngValue]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                        <!-- <strong *ngIf="(!updatePassGenerationForm.controls['pass_size'].valid) && (updatePassGenerationForm.controls['pass_size'].touched) " class="text-danger ">Pass size is required.</strong> -->
+
+                    </div>
+                    <br>
+                    <!-- <div class="form-group">
+                        <b>Please check to add custom colour</b> <input (change)="onChange($event)" type="checkbox" class="ml-4">
+                    </div> -->
+
+                    <!-- <div class="form-group" *ngIf="!showCustom">
+                        <label>Edit Pass Colour: </label> <span [style.background-color]="epassColor" style="padding: 7px 30px;" class="ml-2"></span>
+
+                        <select class="form-control" formControlName="pass_color" name="pass_color">
+                            <option [ngValue]="null" disabled>Choose Default Colour</option>
+                            <option value="lightblue">Lightblue(default)</option>
+                            <option value="#f6e58d">Lightyellow(default)</option>
+
+                        </select>
+                        <strong *ngIf="(!chooseformdata.controls['color_code'].valid) && (chooseformdata.controls['color_code'].touched) " class="text-danger ">Pass type is required.</strong>
+
+                    </div> -->
+
+                    <div class="form-group">
+                        <label>Edit Pass Colour:</label>
+                        <input type="text" id="pass_color" name="pass_color" class="form-control" formControlName="pass_color" placeholder="Add Custom Color">
+
+                        <!-- <strong *ngIf="(!chooseformdata.controls['custom_color'].valid) && (chooseformdata.controls['custom_color'].touched) " class="text-danger ">Pass type is required.</strong> -->
+
+                        <p style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color:gray;font-size: 13px;">
+                            Note : Colour Code should be in hash format e.g:#ffff
+                        </p>
+                    </div><br>
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label>Lineup: </label>
+                            <input class="ml-5" type="checkbox" formControlName="lineup" name="lineup"> <br>
+                            <!-- <span *ngIf="passLineup == 0"> <b>No</b></span><span *ngIf="passLineup == 1"> <b>Yes</b></span> -->
+                            <!-- <strong *ngIf="(!passGenerationForm.controls['linup'].valid) && (passGenerationForm.controls['linup'].touched) " class="text-danger ">Start Time is required.</strong> -->
+
+                        </div>
+                        <div class="col-6">
+                            <label>Proximity: </label>
+                            <input style="margin-left: 25px;" type="checkbox" formControlName="proximity" name="proximity"> <br>
+                            <!-- <span *ngIf="passProximity == 0"><b>No</b></span><span *ngIf="passProximity == 1"><b>Yes</b></span> -->
+                            <!-- <strong *ngIf="(!passGenerationForm.controls['proximity'].valid) && (passGenerationForm.controls['proximity'].touched) " class="text-danger ">End Time is required.</strong> -->
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4">
+                    <div class="form-group ml-5" style="margin-top: -80px;">
+                        <button class="btn mr-3 pl-4 pr-4" style="background-color: var(--primary);color: white;" (click)="getUpdateTblData()">Edit</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,213 @@
+<div class="container">
+    <!-- <img src="http://localhost:3000/photo-1618228900903.png" class="img-fluid" style="width:200px;height: 300px;" alt=""> -->
+    <div class="col-12 mt-3">
+        <div class="row">
+            <div class="col-6">
+                <h4>Choose Multiple Passes Template</h4>
+            </div>
+            <div class="col-6">
+                <input type="radio" name="a" (click)="backToSingle()">&nbsp;&nbsp; <span style="font-weight: 500;font-size: smaller;" class="mr-5">Single</span> <input type="radio" checked name="a">&nbsp;&nbsp; <span style="font-weight: 500;font-size: smaller;">Bulk</span>
+                <button class="btn pl-4 pr-4 float-right" style="background-color: var(--primary);color: white;" (click)="closeDialog()">Close</button>
+            </div>
+
+        </div>
+
+    </div>
+    <hr style="border: 1px solid black;border-radius: 2px; width: 100%;">
+    <!-- <div *ngIf="message.length > 0">
+        <div class="alert mt-2 alert-success">
+            {{message}}
+        </div>
+        <div id="page" style="width: 595.28px;color: black;background: white;">
+
+            <div class="card" style="width:600px;border: 1px solid black;">
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-4" style="text-align: center;">
+                            <img class="card-img-top" src="../../assets/police.jpg" alt="Card image" style="width:100%">
+                        </div>
+                        <div class="col-8">
+                            <h4 class="card-title">Nagpur Police Pass</h4>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body" *ngFor="let item of passData">
+
+                    <div class="row mb-3">
+                        <div class="col-3">
+                            <b>Buckle Id:  </b>
+                        </div>
+                        <div class="col-9">
+                            {{item.id_number}}
+                        </div>
+
+
+                    </div>
+                    <div class="row mb-3">
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>Name: </b>
+                                </div>
+                                <div class="col-6">
+                                    {{item.name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>Mobile No: </b>
+                                </div>
+                                <div class="col-6">
+                                    {{item.mobile}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>Designation: </b>
+                                </div>
+                                <div class="col-6">
+                                    {{item.designation}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-8">
+                                    <b>Company Name: </b>
+                                </div>
+                                <div class="col-4">
+                                    {{item.company_name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>Station: </b>
+                                </div>
+                                <div class="col-6">
+                                    {{item.station}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>Duty Place: </b>
+                                </div>
+                                <div class="col-6">
+                                    {{item.duty_place}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>Start Date: </b>
+                                </div>
+                                <div class="col-6">
+                                    {{item.start_date | date}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>End Date: </b>
+                                </div>
+                                <div class="col-6">
+                                    {{item.end_date | date}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-3">
+                            <b>Duration: </b>
+                        </div>
+                        <div class="col-9">
+                            {{item.start_time}} to {{item.end_time}}
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 bg-light text-right">
+            <button (click)="download()" class="btn" style="background-color: var(--primary);color: white;">Download Pass</button>
+        </div>
+
+    </div> -->
+
+    <!-- <div class="alert mt-2 alert-danger" *ngIf="error.length > 0">
+        {{error}}
+    </div> -->
+
+    <form [formGroup]="choosebulkformdata" (ngSubmit)="onSubmit()">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Choose Paper Size</label>
+                        <select class="form-control" formControlName="paper_size" name="paper_size">
+                            <option [ngValue]="null" disabled>Choose Pass Size</option>
+                            <option *ngFor="let size of PassSize" [ngValue]="size">
+                                {{ size }}
+                            </option>
+                        </select>
+                        <strong *ngIf="(!choosebulkformdata.controls['paper_size'].valid) && (choosebulkformdata.controls['paper_size'].touched) " class="text-danger ">Pass size is required.</strong>
+
+                    </div> <br>
+                    <div class="form-group">
+                        <label> Upload Images Folder Zip</label>
+                        <input type="file" class="form-control" formControlName="zip" name="zip" (change)="uploadZip($event)">
+                        <strong *ngIf="(!choosebulkformdata.controls['zip'].valid) && (choosebulkformdata.controls['zip'].touched) " class="text-danger ">Only upload .zip file.</strong>
+                    </div>
+                    <small class="text-danger">Note : Please rename pass holders photos folder to <b>images</b> and then compress it into zip file.</small>
+
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-8"></div>
+                    <div class="col-4">
+                        <div class="form-group mt-4 ml-5">
+                            <button class="btn mr-3 pl-4 pr-4" style="background-color: var(--primary);color: white;" [disabled]="!choosebulkformdata.valid">Next</button>
+                            <!-- <button class="btn pl-4 pr-4" style="background-color: var(--primary);color: white;" (click)="closeDialog()">Cancel</button> -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+</div>

@@ -1,0 +1,64 @@
+<mat-sidenav-container class="sidenav-container" *ngIf="isLoggedIn">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+        <mat-toolbar style="background-color: white;"><span>Police Duty Pass Generation</span></mat-toolbar>
+        <mat-nav-list>
+            <a mat-list-item routerLink="/dashboard">
+
+                <div class="row">
+                    <div class="col-3 col-sm-3">
+                        <img src="../assets/icons/business-report 1.svg" width="20" height="20">
+                    </div>
+                    <div class="col-9 col-sm-7 pl-2 ">
+                        Dashboard
+                    </div>
+                </div>
+
+            </a>
+            <a mat-list-item routerLink="/history">
+
+                <div class="row">
+                    <div class="col-3 col-sm-3">
+                        <img src="../assets/icons/history 1.svg" width="20" height="20">
+                    </div>
+                    <div class="col-9 col-sm-7 pl-2 ml-1">
+                        History
+                    </div>
+                </div>
+
+            </a>
+            <a mat-list-item (click)="logout()">
+                <div class="row">
+                    <div class="col-3 col-sm-3">
+                        <img src="../assets/icons/log-out.svg" width="20" height="20">
+                    </div>
+                    <div class="col-9 col-sm-9 ">
+                        Log Out
+                    </div>
+                </div>
+
+            </a>
+
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar style="background-color: var(--primary);" class="p-4">
+            <button style="color: white;" type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button>
+            <div class="text-white w-100">
+                <div class="row">
+                    <div class="col-11 align-self-center">
+                        <h6 class="float-right  mr-2 d-inline">{{adminName}}</h6>
+                    </div>
+                    <div class="col-1 p-4">
+                        <img class="float-right d-inline" style="width: 100%; height: 100%;" src="../assets/profile.png" alt="profile" />
+                    </div>
+                </div>
+            </div>
+        </mat-toolbar>
+        <!-- Add Content Here -->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<app-login (auth)="auth($event)" *ngIf="!isLoggedIn"></app-login>

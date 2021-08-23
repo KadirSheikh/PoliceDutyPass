@@ -1,0 +1,46 @@
+<div class="container-fluid" style="background-color: var(--primary);">
+    <div class="row d-flex flex-row flex-nowrap mx-2" style="overflow-x: scroll; background : var(--primary); ">
+
+        <div class="col-sm-3 pb-1 p-4" (click)="allPasses()">
+            <div class="card mx-1 p-2">
+                <div class="row">
+                    <div class="col-8 py-3">
+                        <h4 style="white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 200px;cursor: pointer;" data-toggle="tooltip" data-placement="top" title="">All Passes</h4>
+
+
+                    </div>
+                    <!-- <div class="col-4 align-self-center">
+                        <img src="../../assets/icons/location.svg" alt="location" />
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-3 pb-1 p-4" *ngFor="let venue of allVenues;" (click)="showTable(venue.duty_place)">
+            <div class="card mx-1 p-2">
+                <div class="row">
+                    <div class="col-8 py-3">
+                        <h4 style="white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 200px;cursor: pointer;" data-toggle="tooltip" data-placement="top" title="{{venue.duty_place}}">{{venue.duty_place}}</h4>
+
+                        <p>Number of People</p>
+                        <h3>{{venue.num}}</h3>
+                    </div>
+                    <div class="col-4 align-self-center">
+                        <img src="{{__dirname}}assets/icons/location.svg" alt="location" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <app-details-table [getData]="passPeopleData"></app-details-table>
+</div>

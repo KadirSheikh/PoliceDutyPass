@@ -1,0 +1,259 @@
+<div class="container">
+
+    <div class="col-12 mt-3">
+        <div class="row">
+            <div class="col-6">
+                <h4>Generate Single Pass</h4>
+            </div>
+            <div class="col-6">
+
+                <button class="btn pl-4 pr-4 float-right" style="background-color: var(--primary);color: white;" (click)="closeDialog()">Close</button>
+            </div>
+
+        </div>
+
+    </div>
+    <hr style="border: 1px solid black;border-radius: 2px; width: 100%;">
+    <div *ngIf="message.length > 0">
+        <div class="alert mt-2 alert-success">
+            {{message}}
+        </div>
+        <div id="page" style="width: 595.28px;color: black;background: white;">
+
+            <div class="card" style="width:600px;border: 1px solid black;" [style.background-color]="passColor">
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-12" style="text-align: center;">
+                            <h4 class="card-title">VALID WITH ID</h4>
+                            <div class="col-5" style="margin-left: 160px;">
+                                <h4 class="card-title" style="background-color:black;" [style.color]="passColor">{{passType | uppercase}}</h4>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body" *ngFor="let item of passData">
+
+                    <div class="row mb-3">
+                        <div class="col-2">
+                            <b>Sr.No:  </b>
+                        </div>
+                        <div style="border-bottom:1px solid black;" class="col-10">
+                            {{item.id_number}}
+                        </div>
+
+
+                    </div>
+                    <div class="row mb-3">
+
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">
+                                    <b>Place: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-10">
+                                    {{item.duty_place}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3">
+                                    <b>Valid from: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-9">
+                                    {{item.start_date | date}} to {{item.end_date | date}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">
+                                    <b>Name: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-10">
+                                    {{item.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                        <div class="col-2"></div>
+                        <div class="col-3 mr-5" style="border: 1px solid black;">
+                            <img [src]="imgUrl" alt="" class="img-fluid" style="width:200px;height: 200px;">
+                        </div>
+
+                        <div class="col-6">
+                            <div class="row mb-4 mt-3">
+                                <div class="col-3">
+                                    <b>Rank: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-9">
+                                    {{item.designation}}
+                                </div>
+                            </div>
+                            <div class="row mb-5">
+                                <div class="col-3">
+                                    <b>DPT: </b>
+                                </div>
+                                <div style="border-bottom:1px solid black;" class="col-9">
+                                    {{item.company_name}}
+                                </div>
+                            </div>
+                            <div class="row mb-4 mt-2">
+
+                                DCP S. B NAGPUR CITY
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-12 bg-light text-right">
+            <button (click)="download()" class="btn" style="background-color: var(--primary);color: white;">Download Pass</button>
+        </div>
+
+    </div>
+
+    <div class="alert mt-2 alert-danger" *ngIf="error.length > 0">
+        {{error}}
+    </div>
+
+    <form [formGroup]="passGenerationForm" (ngSubmit)="onSubmit()" *ngIf="showForm">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Bukle Number: </label>
+                        <input type="text" class="form-control" formControlName="id_number" name="id_number" placeholder="Bukle Number/Id Number">
+                        <strong *ngIf="(!passGenerationForm.controls['id_number'].valid) && (passGenerationForm.controls['id_number'].touched) " class="text-danger ">Buckel No/ID Number is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Name: </label>
+                        <input type="text" class="form-control" formControlName="name" name="name" placeholder="Name">
+                        <strong *ngIf="(!passGenerationForm.controls['name'].valid) && (passGenerationForm.controls['name'].touched) " class="text-danger ">Name is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Image: </label>
+                        <input type="file" class="form-control" formControlName="photo" name="photo" (change)="selectImage($event)">
+                        <strong *ngIf="(!passGenerationForm.controls['photo'].valid) && (passGenerationForm.controls['photo'].touched) " class="text-danger ">Only upload .jpeg .jpg .png file.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Rank: </label>
+                        <input type="text" class="form-control" formControlName="designation" name="designation" placeholder="Rank">
+                        <strong *ngIf="(!passGenerationForm.controls['designation'].valid) && (passGenerationForm.controls['designation'].touched) " class="text-danger ">Rank is required.</strong>
+
+                    </div><br>
+
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Mobile: </label>
+                        <input type="number" class="form-control" formControlName="mobile" name="mobile" placeholder="Mobile">
+                        <strong *ngIf="(!passGenerationForm.controls['mobile'].valid) && (passGenerationForm.controls['mobile'].touched) " class="text-danger ">Mobile is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Station: </label>
+                        <input type="text" class="form-control" formControlName="station" name="station" placeholder="Station">
+                        <strong *ngIf="(!passGenerationForm.controls['station'].valid) && (passGenerationForm.controls['station'].touched) " class="text-danger ">Station is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>Place Duty: </label>
+                        <input type="text" class="form-control" formControlName="duty_place" name="duty_place" placeholder="Place Duty">
+                        <strong *ngIf="(!passGenerationForm.controls['duty_place'].valid) && (passGenerationForm.controls['duty_place'].touched) " class="text-danger ">Duty Place is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>DPT: </label>
+                        <input type="text" class="form-control" formControlName="company_name" name="company_name" placeholder="DPT">
+                        <strong *ngIf="(!passGenerationForm.controls['company_name'].valid) && (passGenerationForm.controls['company_name'].touched) " class="text-danger ">DPT is required.</strong>
+
+                    </div>
+
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Start Date: </label>
+                        <input type="date" class="form-control" formControlName="start_date" name="start_date">
+                        <strong *ngIf="(!passGenerationForm.controls['start_date'].valid) && (passGenerationForm.controls['start_date'].touched) " class="text-danger ">Start Date is required.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+                        <label>End Date: </label>
+                        <input type="date" class="form-control" formControlName="end_date" name="end_date">
+                        <strong *ngIf="(!passGenerationForm.controls['end_date'].valid) && (passGenerationForm.controls['end_date'].touched) " class="text-danger ">End Date is required.</strong>
+
+                    </div><br>
+                    <!-- <div class="form-group">
+                        <label>Pass-Holder Photo: </label>
+                        <input type="file" class="form-control" formControlName="photo" name="photo">
+                        <strong *ngIf="(!passGenerationForm.controls['photo'].valid) && (passGenerationForm.controls['photo'].touched) " class="text-danger ">End Date is required.</strong>
+
+                    </div><br> -->
+                    <div class="form-group">
+                        <b>Pass Type: </b><br>
+                        <label>Duty Pass: </label>
+                        <input checked class="ml-5" type="radio" formControlName="pass_type" name="pass_type" value="Duty Pass">
+                        <!-- <strong *ngIf="(!passGenerationForm.controls['pass_type'].valid) && (passGenerationForm.controls['pass_type'].touched) " class="text-danger ">Start Time is required.</strong> -->
+                        <br>
+                        <label>Security Pass: </label>
+                        <input style="margin-left: 23px;" type="radio" formControlName="pass_type" name="pass_type" value="Security Pass">
+                        <strong *ngIf="(!passGenerationForm.controls['pass_type'].valid) && (passGenerationForm.controls['pass_type'].touched) " class="text-danger ">Please select pass type.</strong>
+
+                    </div><br>
+                    <div class="form-group">
+
+                        <label>Lineup: </label>
+                        <input class="ml-5" type="checkbox" formControlName="lineup" name="lineup">
+                        <!-- <strong *ngIf="(!passGenerationForm.controls['linup'].valid) && (passGenerationForm.controls['linup'].touched) " class="text-danger ">Start Time is required.</strong> -->
+                        <br>
+                        <label>Proximity: </label>
+                        <input style="margin-left: 25px;" type="checkbox" formControlName="proximity" name="proximity">
+                        <!-- <strong *ngIf="(!passGenerationForm.controls['proximity'].valid) && (passGenerationForm.controls['proximity'].touched) " class="text-danger ">End Time is required.</strong> -->
+
+                    </div><br>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4">
+                    <div class="form-group mt-4 ml-5">
+                        <button class="btn mr-3 pl-4 pr-4" style="background-color: var(--primary);color: white;" (click)="getTblData()" [disabled]="!passGenerationForm.valid">Generate</button>
+                        <!-- <button class="btn pl-4 pr-4" style="background-color: var(--primary);color: white;" (click)="closeDialog()">Cancel</button> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+
+
+
+</div>
